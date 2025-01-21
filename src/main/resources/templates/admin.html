@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ</title>
+</head>
+<body>
+<h2>Добро пожаловать в систему, <span th:text="${admInfo.getName()}"></span></h2>
+<h3><a th:href="@{/user}">Панель пользователя</a></h3>
+<h1>Список пользователей</h1>
+<div>
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>Имя и фамилия</th>
+            <th>Логин</th>
+            <th>Пароль</th>
+            <th>Действие</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.getId}"></td>
+            <td><a th:href="@{/admin/show(id=${user.getId})}" th:utext="${user.getName}"></a></td>
+            <td th:utext="${user.getLogin}"></td>
+            <td th:utext="${user.getPassword}"></td>
+            <td><a th:href="@{/admin/edit/{id}(id=${user.id})}">изменить</a>
+                <form th:action="@{/admin/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <button type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div style="margin-top: 20px; margin-left: 40px;">
+    <input type="button" value="Добавить нового пользователя"
+           onclick="window.location.href = 'admin/new_user'"/>
+</div>
+<a href="/logout" class="btn btn-danger">Выйти</a>
+</body>
+</html>
