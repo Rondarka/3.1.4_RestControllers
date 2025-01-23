@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 @RequestMapping("user")
 public class UserController {
 
+
 	@GetMapping
 	public String userPage (ModelMap model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -25,38 +25,22 @@ public class AdminController {
 
     @GetMapping
     public String allUsersPage (ModelMap model) {
+
         User currentAdmin = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("admInfo", currentAdmin);
-        return "admin";
-    }
 
-    @GetMapping(value = "/show")
-    public String showUserPage (@RequestParam(value = "id", required = false) Integer id, ModelMap model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "adminUserInfo";
-    }
-
-    @GetMapping(value = "/new_user")
-    public String newUserPage (ModelMap model) {
         List<Role> roles = roleSerivce.getAllRoles();
         model.addAttribute("user", new User());
         model.addAttribute("roles", roles);
-        return "adminUserCreate";
+
+        return "admin";
     }
 
     @PostMapping("/new_user")
     public String newUserAdd (@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
-    }
-
-    @GetMapping(value = "edit/{id}")
-    public String editUserPage (@PathVariable("id") Integer id, ModelMap model) {
-        List<Role> roles = roleSerivce.getAllRoles();
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roles", roles);
-        return "adminUserEdit";
     }
 
     @PostMapping("edit/{id}")
