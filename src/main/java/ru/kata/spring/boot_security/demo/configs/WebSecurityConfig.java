@@ -16,8 +16,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        return httpSecurity.authorizeRequests()
+        return httpSecurity
+                .csrf()
+                .ignoringAntMatchers("/api/**")
+                .and()
+                .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
@@ -29,6 +34,7 @@ public class WebSecurityConfig {
                 .permitAll()
                 .and()
                 .build();
+
     }
 
     @Bean
